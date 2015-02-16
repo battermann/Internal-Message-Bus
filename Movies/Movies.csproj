@@ -52,15 +52,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlers.cs" />
-    <Compile Include="Commands\ChangeTitle.cs" />
+    <Compile Include="Commands\UpdateMovie.cs" />
     <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\InsertMovie.cs" />
+    <Compile Include="Commands\CreateMovie.cs" />
     <Compile Include="Contracts\IMessage.cs" />
-    <Compile Include="Contracts\IRepository.cs" />
+    <Compile Include="Data\IRepository.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Events\Event.cs" />
-    <Compile Include="Events\MovieInserted.cs" />
-    <Compile Include="Events\TitleChanged.cs" />
+    <Compile Include="Events\MovieCreated.cs" />
+    <Compile Include="Events\MovieUpdated.cs" />
     <Compile Include="Infrastructure\ICommandSender.cs" />
     <Compile Include="Infrastructure\IEventPublisher.cs" />
     <Compile Include="Infrastructure\IMessageBus.cs" />

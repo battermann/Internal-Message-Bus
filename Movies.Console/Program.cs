@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using Movies.Commands;
-using Movies.Contracts;
+using Movies.Data;
 using Movies.Events;
 using Movies.Infrastructure;
 
@@ -14,23 +13,36 @@ namespace Movies.ConsoleApplication
         {
             var repository = new InMemoryRepository();
             var bus = MessageBus.GetInstance;
-                
+
             var commandHandler = new CommandHandlers(bus);
             var eventHandler = new EventHandlers(repository);
 
-            bus.Register<InsertMovie>(commandHandler.Handle);
-            bus.Register<ChangeTitle>(commandHandler.Handle);
-            bus.Register<MovieInserted>(eventHandler.Handle);
-            bus.Register<TitleChanged>(eventHandler.Handle);
+            bus.Register<CreateMovie>(commandHandler.Handle);
+            bus.Register<UpdateMovie>(commandHandler.Handle);
+            bus.Register<MovieCreated>(eventHandler.Handle);
+            bus.Register<MovieUpdated>(eventHandler.Handle);
 
-            bus.Register<MovieInserted>(x => OnMovieInserted(repository));
-            bus.Register<TitleChanged>(x => OnTitleChanged(repository));
-            
-            bus.Send(new InsertMovie { Title = "Pupl Fiction" });
-            bus.Send(new InsertMovie { Title = "Kill Bill Vol. I" });
+            bus.Register<MovieCreated>(x => OnMovieInserted(repository));
+            bus.Register<MovieUpdated>(x => OnTitleChanged(repository));
 
-            var id = repository.GetAll().ElementAt(0).Id;
-            bus.Send(new ChangeTitle { Id = id, Title = "From Dusk Till Dawn" });
+            bus.Send(new CreateMovie
+            {
+                Title = "Pupl Fiction",
+                Genre = "Crime",
+                ReleaseDate = new DateTime(1994, 1, 1),
+                Price = 8.5m
+            });
+
+            bus.Send(new CreateMovie
+            {
+                Title = "From Dusk Till Dawn",
+                Genre = "Action",
+                ReleaseDate = new DateTime(2003, 1, 1),
+                Price = 5m
+            });
+
+            var id = repository.GetAll().ElementAt(1).Id;
+            bus.Send(new UpdateMovie { Id = id, Title = "Kill Bill Vol. I" });
         }
 
         private static void OnTitleChanged(IRepository repository)

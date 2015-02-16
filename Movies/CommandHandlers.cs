@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using Movies.Commands;
-using Movies.Contracts;
+﻿using Movies.Commands;
 using Movies.Events;
 using Movies.Infrastructure;
 
@@ -15,22 +13,32 @@ namespace Movies
             _bus = bus;
         }
 
-        public void Handle(InsertMovie msg)
+        public void Handle(CreateMovie msg)
         {
-            var @event = new MovieInserted
+            // Todo: Validation
+
+            var @event = new MovieCreated
             {
-                Title = msg.Title
+                Title = msg.Title,
+                ReleaseDate = msg.ReleaseDate,
+                Genre = msg.Genre,
+                Price = msg.Price
             };
 
             _bus.Publish(@event);
         }
 
-        public void Handle(ChangeTitle msg)
+        public void Handle(UpdateMovie msg)
         {
-            var @event = new TitleChanged
+            // Todo: Validation
+
+            var @event = new MovieUpdated
             {
                 Id = msg.Id,
-                Title = msg.Title
+                Title = msg.Title,
+                ReleaseDate = msg.ReleaseDate,
+                Genre = msg.Genre,
+                Price = msg.Price
             };
 
             _bus.Publish(@event);

@@ -1,4 +1,5 @@
 ﻿using Movies.Contracts;
+using Movies.Data;
 using Movies.Events;
 using Movies.Models;
 
@@ -13,16 +14,15 @@ namespace Movies
             _repository = repository;
         }
 
-        public void Handle(MovieInserted msg)
+        public void Handle(MovieCreated msg)
         {
-            _repository.Insert(new Movie(msg.Title));
+            _repository.Insert(new Movie(msg.Title, msg.ReleaseDate, msg.Genre, msg.Price));
         }
 
-        public void Handle(TitleChanged msg)
+        public void Handle(MovieUpdated msg)
         {
             var movie = _repository.GetById(msg.Id);
-            movie.Title = msg.Title;
-            _repository.Update(movie);
+            _repository.Update(movie.NewMovieWith(msg.Title, msg.ReleaseDate, msg.Genre, msg.Price));
         }
     }
 }

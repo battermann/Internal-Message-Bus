@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Movies.Models;
 
-namespace Movies.Contracts
+namespace Movies.Data
 {
     public class InMemoryRepository : IRepository
     {
-        private readonly List<Movie> _movies;
+        private List<Movie> _movies;
 
         public InMemoryRepository()
         {
@@ -31,8 +31,9 @@ namespace Movies.Contracts
 
         public void Update(Movie movie)
         {
-            var m = _movies.Single(x => x.Id == movie.Id);
-            m.Title = movie.Title;
+            _movies = _movies
+                .Select(x => x.Id == movie.Id ? movie : x)
+                .ToList();
         }
     }
 
