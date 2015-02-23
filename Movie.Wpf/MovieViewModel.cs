@@ -11,13 +11,9 @@ namespace Movies.Wpf
         private decimal _price;
         private readonly Guid _id;
 
-        public MovieViewModel(Movie model)
+        public MovieViewModel(Guid id)
         {
-            _id = model.Id;
-            _title = model.Title;
-            _releaseDate = model.ReleaseDate;
-            _genre = model.Genre;
-            _price = model.Price;
+            _id = id;
         }
 
         public string Title

@@ -20,31 +20,19 @@ namespace Movies.Wpf
         private static void Start()
         {
             var bus = MessageBus.GetInstance;
-            var repository = new InMemoryRepository();
+            var repository = new InMemoryMovieRepository();
 
             var commandHandlers = new CommandHandlers(bus);
             bus.Register<CreateMovie>(commandHandlers.Handle);
-            bus.Register<UpdateMovie>(commandHandlers.Handle);
+            bus.Register<ChangeMovieTitle>(commandHandlers.Handle);
 
             var eventHandlers = new EventHandlers(repository);
-            bus.Register<MovieUpdated>(eventHandlers.Handle);
+            bus.Register<MovieTitleChanged>(eventHandlers.Handle);
             bus.Register<MovieCreated>(eventHandlers.Handle);
 
-            bus.Send(new CreateMovie
-            {
-                Title = "Pupl Fiction",
-                Genre = "Crime",
-                ReleaseDate = new DateTime(1994, 1, 1),
-                Price = 8.5m
-            });
+            bus.Send(new CreateMovie(Guid.NewGuid(), "Pupl Fiction", new DateTime(1994, 1, 1), "Crime", 8.5m));
 
-            bus.Send(new CreateMovie
-            {
-                Title = "From Dusk Till Dawn",
-                Genre = "Action",
-                ReleaseDate = new DateTime(2003, 1, 1),
-                Price = 5m
-            });
+            bus.Send(new CreateMovie(Guid.NewGuid(), "From Dusk Till Dawn", new DateTime(2003, 1, 1), "Action", 8.99m));
 
             var mainWindow = new MainWindow {DataContext = new MovieListViewModel(bus, repository)};
             mainWindow.ShowDialog();

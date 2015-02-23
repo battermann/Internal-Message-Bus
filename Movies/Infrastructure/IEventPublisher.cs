@@ -1,4 +1,5 @@
-﻿using Movies.Events;
+﻿using Movies.Contracts;
+using Movies.Events;
 
 namespace Movies.Infrastructure
 {

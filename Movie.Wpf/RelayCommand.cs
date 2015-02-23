@@ -27,12 +27,7 @@ namespace Movies.Wpf
 
         public bool CanExecute(object parameter)
         {
-            if (_canExecute == null)
-            {
-                return true;
-            }
-
-            return _canExecute(parameter);
+            return _canExecute == null || _canExecute(parameter);
         }
 
         public event EventHandler CanExecuteChanged

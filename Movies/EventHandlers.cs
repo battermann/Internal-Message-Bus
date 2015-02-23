@@ -1,28 +1,25 @@
-﻿using Movies.Contracts;
-using Movies.Data;
+﻿using Movies.Data;
 using Movies.Events;
-using Movies.Models;
 
 namespace Movies
 {
     public class EventHandlers
     {
-        private readonly IRepository _repository;
+        private readonly IMovieRepository _movieRepository;
 
-        public EventHandlers(IRepository repository)
+        public EventHandlers(IMovieRepository movieRepository)
         {
-            _repository = repository;
+            _movieRepository = movieRepository;
         }
 
         public void Handle(MovieCreated msg)
         {
-            _repository.Insert(new Movie(msg.Title, msg.ReleaseDate, msg.Genre, msg.Price));
+            _movieRepository.Insert(msg);
         }
 
-        public void Handle(MovieUpdated msg)
+        public void Handle(MovieTitleChanged msg)
         {
-            var movie = _repository.GetById(msg.Id);
-            _repository.Update(movie.NewMovieWith(msg.Title, msg.ReleaseDate, msg.Genre, msg.Price));
+            _movieRepository.Update(msg);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Movies.Commands;
+﻿using System;
+using Movies.Commands;
 using Movies.Events;
 using Movies.Infrastructure;
 
@@ -17,29 +18,16 @@ namespace Movies
         {
             // Todo: Validation
 
-            var @event = new MovieCreated
-            {
-                Title = msg.Title,
-                ReleaseDate = msg.ReleaseDate,
-                Genre = msg.Genre,
-                Price = msg.Price
-            };
+            var @event = new MovieCreated(Guid.NewGuid(), msg.Title, msg.ReleaseDate, msg.Genre, msg.Price);
 
             _bus.Publish(@event);
         }
 
-        public void Handle(UpdateMovie msg)
+        public void Handle(ChangeMovieTitle msg)
         {
             // Todo: Validation
 
-            var @event = new MovieUpdated
-            {
-                Id = msg.Id,
-                Title = msg.Title,
-                ReleaseDate = msg.ReleaseDate,
-                Genre = msg.Genre,
-                Price = msg.Price
-            };
+            var @event = new MovieTitleChanged(msg.Id, msg.Title);
 
             _bus.Publish(@event);
         }

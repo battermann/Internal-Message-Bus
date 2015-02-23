@@ -1,4 +1,4 @@
-﻿<Window x:Class="Movies.Wpf.NewAlbumDialog"
+﻿<Window x:Class="Movies.Wpf.NewMovieDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="New Movie" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
@@ -18,6 +18,4 @@
             <Button IsCancel="True" MinWidth="60">_Cancel</Button>
         </WrapPanel>
     </StackPanel>
-
-
 </Window>

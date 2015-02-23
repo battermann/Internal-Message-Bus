@@ -1,4 +1,5 @@
 ﻿using Movies.Commands;
+using Movies.Contracts;
 
 namespace Movies.Infrastructure
 {

@@ -2,10 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
-    <DockPanel LastChildFill="True" Background="White">
+    <DockPanel LastChildFill="True" Background="White" >
         <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="10" >
             <Label Content="Movies" FontSize="16" DockPanel.Dock="Left"/>
             <Button DockPanel.Dock="Right" Content="Add New" Command="{Binding AddMovieCommand}" Background="White" Padding="10,5,10,5"/>
+            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}" Background="White" Padding="10,5,10,5" Margin="0,0,10,0"/>
         </DockPanel>
         <DataGrid Margin="10" ItemsSource="{Binding Movies}"  AutoGenerateColumns="False" GridLinesVisibility="None" HorizontalGridLinesBrush="LightGray" SelectionMode="Single" DockPanel.Dock="Top" HorizontalScrollBarVisibility="Disabled">
             <DataGrid.Resources>
@@ -13,9 +14,9 @@
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" />
-                <DataGridTextColumn Header="Year" Binding="{Binding ReleaseDate}" />
-                <DataGridTextColumn Header="Genre" Binding="{Binding Genre}"/>
-                <DataGridTextColumn Header="Price" Binding="{Binding Price}"/>
+                <DataGridTextColumn Header="Year" Binding="{Binding ReleaseDate}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Price" Binding="{Binding Price}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

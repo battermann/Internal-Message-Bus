@@ -9,11 +9,12 @@ namespace Movies.Models
         {
         }
 
-        protected Movie(Guid id, string title, DateTime releaseDate, string genre, decimal price)
+        public Movie(Guid id, string title, DateTime releaseDate, string genre, decimal price)
         {
             if (String.IsNullOrWhiteSpace(title)) throw new ArgumentNullException("title");
             if (releaseDate == new DateTime()) throw new ArgumentException("date cannot be empty", "releaseDate");
             if (String.IsNullOrWhiteSpace(genre)) throw new ArgumentNullException("genre");
+            if(id == new Guid()) throw new ArgumentException("id cannot be empty", "id");
 
             Id = id;
             Title = title;

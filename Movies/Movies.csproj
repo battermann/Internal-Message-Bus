@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FunctionalExtensions">
+      <HintPath>..\packages\FunctionalExtensions.1.3.0.1\lib\Net45\FunctionalExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive.Core">
@@ -52,15 +55,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlers.cs" />
-    <Compile Include="Commands\UpdateMovie.cs" />
-    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\ChangeMovieTitle.cs" />
+    <Compile Include="Contracts\Command.cs" />
     <Compile Include="Commands\CreateMovie.cs" />
     <Compile Include="Contracts\IMessage.cs" />
-    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\IMovieRepository.cs" />
     <Compile Include="EventHandlers.cs" />
-    <Compile Include="Events\Event.cs" />
+    <Compile Include="Contracts\Event.cs" />
     <Compile Include="Events\MovieCreated.cs" />
-    <Compile Include="Events\MovieUpdated.cs" />
+    <Compile Include="Events\MovieTitleChanged.cs" />
     <Compile Include="Infrastructure\ICommandSender.cs" />
     <Compile Include="Infrastructure\IEventPublisher.cs" />
     <Compile Include="Infrastructure\IMessageBus.cs" />
