@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
 using Movies.Commands;
 using Movies.Contracts;

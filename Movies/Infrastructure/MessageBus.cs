@@ -8,16 +8,10 @@ namespace Movies.Infrastructure
     public class MessageBus : IMessageBus
     {
         private readonly ISubject<IMessage> _messages;
-        private static IMessageBus _bus;
 
-        private MessageBus()
+        public MessageBus()
         {
             _messages = new Subject<IMessage>();
-        }
-
-        public static IMessageBus GetInstance
-        {
-            get { return _bus ?? (_bus = new MessageBus()); }
         }
 
         public void Send<T>(T command) where T : Command

@@ -2,35 +2,27 @@
 using Movies.Commands;
 using Movies.Contracts;
 using Movies.Events;
-using Movies.Infrastructure;
 
 namespace Movies
 {
-    public class CommandHandlers
+    public static class CommandHandlers
     {
-        private readonly IEventPublisher _bus;
-
-        public CommandHandlers(IEventPublisher bus)
-        {
-            _bus = bus;
-        }
-
-        public void Handle(CreateMovie msg)
+        public static void Handle(Func<IEventPublisher> bus, CreateMovie msg)
         {
             // Todo: Validation
 
             var @event = new MovieCreated(Guid.NewGuid(), msg.Title, msg.ReleaseDate, msg.Genre, msg.Price);
 
-            _bus.Publish(@event);
+            bus().Publish(@event);
         }
 
-        public void Handle(ChangeMovieTitle msg)
+        public static void Handle(Func<IEventPublisher> bus, ChangeMovieTitle msg)
         {
             // Todo: Validation
 
             var @event = new MovieTitleChanged(msg.Id, msg.Title);
 
-            _bus.Publish(@event);
+            bus().Publish(@event);
         }
     }
 }

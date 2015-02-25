@@ -1,26 +1,19 @@
-﻿using Movies.Contracts;
-using Movies.Data;
+﻿using System;
+using Movies.Contracts;
 using Movies.Events;
 
 namespace Movies
 {
-    public class EventHandlers
+    public static class EventHandlers
     {
-        private readonly IMovieRepository _movieRepository;
-
-        public EventHandlers(IMovieRepository movieRepository)
+        public static void Handle(Func<IMovieRepository> repository, MovieCreated msg)
         {
-            _movieRepository = movieRepository;
+            repository().Insert(msg);
         }
 
-        public void Handle(MovieCreated msg)
+        public static void Handle(Func<IMovieRepository> repository, MovieTitleChanged msg)
         {
-            _movieRepository.Insert(msg);
-        }
-
-        public void Handle(MovieTitleChanged msg)
-        {
-            _movieRepository.Update(msg);
+            repository().Update(msg);
         }
     }
 }

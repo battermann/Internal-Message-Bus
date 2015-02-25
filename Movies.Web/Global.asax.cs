@@ -5,7 +5,6 @@ using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Movies.Commands;
-using Movies.Contracts;
 using Movies.Data;
 using Movies.Events;
 using Movies.Infrastructure;
@@ -28,15 +27,13 @@ namespace Movies.Web
         private static void ConfigureAutofac()
         {
             var repository = new InMemoryMovieRepository();
-            var bus = MessageBus.GetInstance;
+            var bus = new MessageBus();
 
-            var commandHandlers = new CommandHandlers(bus);
-            var eventHandlers = new EventHandlers(repository);
+            bus.Register<CreateMovie>(x => CommandHandlers.Handle(() => bus, x));
+            bus.Register<ChangeMovieTitle>(x => CommandHandlers.Handle(() => bus, x));
 
-            bus.Register<CreateMovie>(commandHandlers.Handle);
-            bus.Register<ChangeMovieTitle>(commandHandlers.Handle);
-            bus.Register<MovieCreated>(eventHandlers.Handle);
-            bus.Register<MovieTitleChanged>(eventHandlers.Handle);
+            bus.Register<MovieCreated>(x => EventHandlers.Handle(() => repository, x));
+            bus.Register<MovieTitleChanged>(x => EventHandlers.Handle(() => repository, x));
 
             bus.Send(new CreateMovie(Guid.NewGuid(), "Pupl Fiction", new DateTime(1994, 1, 1), "Crime", 8.5m));
 
@@ -48,8 +45,7 @@ namespace Movies.Web
 
             builder.RegisterType<MoviesController>()
                 .WithParameter("commandSender", bus)
-                .WithParameter("movieQueryFacade", repository)
-                ;
+                .WithParameter("movieQueryFacade", repository);
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

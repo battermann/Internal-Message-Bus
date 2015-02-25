@@ -13,15 +13,13 @@ namespace Movies.ConsoleApplication
         static void Main(string[] args)
         {
             var repository = new InMemoryMovieRepository();
-            var bus = MessageBus.GetInstance;
+            var bus = new MessageBus();
 
-            var commandHandlers = new CommandHandlers(bus);
-            var eventHandlers = new EventHandlers(repository);
+            bus.Register<CreateMovie>(x => CommandHandlers.Handle(() => bus, x));
+            bus.Register<ChangeMovieTitle>(x => CommandHandlers.Handle(() => bus, x));
 
-            bus.Register<CreateMovie>(commandHandlers.Handle);
-            bus.Register<ChangeMovieTitle>(commandHandlers.Handle);
-            bus.Register<MovieCreated>(eventHandlers.Handle);
-            bus.Register<MovieTitleChanged>(eventHandlers.Handle);
+            bus.Register<MovieCreated>(x => EventHandlers.Handle(() => repository, x));
+            bus.Register<MovieTitleChanged>(x => EventHandlers.Handle(() => repository, x));
 
             bus.Register<MovieCreated>(x => OnMovieInserted(repository));
             bus.Register<MovieTitleChanged>(x => OnTitleChanged(repository));

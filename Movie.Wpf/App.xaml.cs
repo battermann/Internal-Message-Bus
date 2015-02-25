@@ -19,16 +19,14 @@ namespace Movies.Wpf
 
         private static void Start()
         {
-            var bus = MessageBus.GetInstance;
             var repository = new InMemoryMovieRepository();
+            var bus = new MessageBus();
 
-            var commandHandlers = new CommandHandlers(bus);
-            bus.Register<CreateMovie>(commandHandlers.Handle);
-            bus.Register<ChangeMovieTitle>(commandHandlers.Handle);
+            bus.Register<CreateMovie>(x => CommandHandlers.Handle(() => bus, x));
+            bus.Register<ChangeMovieTitle>(x => CommandHandlers.Handle(() => bus, x));
 
-            var eventHandlers = new EventHandlers(repository);
-            bus.Register<MovieTitleChanged>(eventHandlers.Handle);
-            bus.Register<MovieCreated>(eventHandlers.Handle);
+            bus.Register<MovieCreated>(x => EventHandlers.Handle(() => repository, x));
+            bus.Register<MovieTitleChanged>(x => EventHandlers.Handle(() => repository, x));
 
             bus.Send(new CreateMovie(Guid.NewGuid(), "Pupl Fiction", new DateTime(1994, 1, 1), "Crime", 8.5m));
 
