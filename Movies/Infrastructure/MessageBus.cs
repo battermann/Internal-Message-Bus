@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Threading.Tasks;
-using Movies.Commands;
 using Movies.Contracts;
-using Movies.Events;
 
 namespace Movies.Infrastructure
 {

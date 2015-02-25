@@ -1,7 +1,4 @@
-﻿using Movies.Contracts;
-using Movies.Events;
-
-namespace Movies.Infrastructure
+﻿namespace Movies.Contracts
 {
     public interface IEventPublisher
     {

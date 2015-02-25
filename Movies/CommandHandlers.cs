@@ -1,5 +1,6 @@
 ﻿using System;
 using Movies.Commands;
+using Movies.Contracts;
 using Movies.Events;
 using Movies.Infrastructure;
 

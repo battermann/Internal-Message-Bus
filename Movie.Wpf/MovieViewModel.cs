@@ -21,6 +21,8 @@ namespace Movies.Wpf
             get { return _title; }
             set
             {
+                if(String.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("The title cannot be empty.");
                 if (Title != value)
                 {
                     _title = value;

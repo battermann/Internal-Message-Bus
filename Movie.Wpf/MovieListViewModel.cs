@@ -4,18 +4,18 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using FunctionalExtensions;
 using Movies.Commands;
-using Movies.Data;
-using Movies.Infrastructure;
+using Movies.Contracts;
 
 namespace Movies.Wpf
 {
     public class MovieListViewModel : ViewModel
     {
         private readonly ICommandSender _commandSender;
-        private readonly IMovieRepository _movieRepository;
+        private readonly IMovieQueryFacade _movieRepository;
         private ObservableCollection<MovieViewModel> _movies;
 
         public ObservableCollection<MovieViewModel> Movies
@@ -31,7 +31,7 @@ namespace Movies.Wpf
             }
         }
 
-        public MovieListViewModel(ICommandSender commandSender, IMovieRepository movieRepository)
+        public MovieListViewModel(ICommandSender commandSender, IMovieQueryFacade movieRepository)
         {
             _commandSender = commandSender;
             _movieRepository = movieRepository;
@@ -103,34 +103,37 @@ namespace Movies.Wpf
         {
             var result = GetMovieFromInputDialog();
 
-            var _ = result.Match(
-                onSome: x =>
+            result.Match(
+                onChoice1Of2: x =>
                 {
                     var createMovie = new CreateMovie(x.Id, x.Title, new DateTime(Int32.Parse(x.ReleaseDate), 1, 1), x.Genre, x.Price);
                     _commandSender.Send(createMovie);
                     _movies.Add(x);
-                    return Unit.Value;
                 },
-                onNone: () => Unit.Value);
+                onChoice2Of2: err =>
+                {
+                    if (err == MovieInputError.ParsingError)
+                        MessageBox.Show("An error occurred. Wrong input.");
+                });
         }
 
-        private static Option<MovieViewModel> GetMovieFromInputDialog()
+        private static Choice<MovieViewModel, MovieInputError> GetMovieFromInputDialog()
         {
             var input = new NewMovieDialog();
             input.ShowDialog();
             if (input.DialogResult == true)
-                return
-                    input.Movie.Select(
-                        x =>
-                            new MovieViewModel(Guid.NewGuid())
-                            {
-                                Title = x.Title,
-                                Genre = x.Genre,
-                                ReleaseDate = x.ReleaseDate.ToString("yyyy", CultureInfo.InvariantCulture),
-                                Price = x.Price
-                            });
+                return input.Movie.Select(x =>
+                    new MovieViewModel(Guid.NewGuid())
+                    {
+                        Title = x.Title,
+                        Genre = x.Genre,
+                        ReleaseDate = x.ReleaseDate.ToString("yyyy", CultureInfo.InvariantCulture),
+                        Price = x.Price
+                    });
 
-            return Option.None<MovieViewModel>();
+            return Choice.NewChoice2Of2<MovieViewModel, MovieInputError>(MovieInputError.Canceled);
         }
     }
+
+    public enum MovieInputError { Canceled, ParsingError }
 }

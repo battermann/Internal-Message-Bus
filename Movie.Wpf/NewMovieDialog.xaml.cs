@@ -25,18 +25,18 @@ namespace Movies.Wpf
             TxtTitle.Focus();
         }
 
-        public Option<Movie> Movie
+        public Choice<Movie, MovieInputError> Movie
         {
             get
             {
                 try
                 {
-                    return new Movie(TxtTitle.Text, new DateTime(Int32.Parse(TxtYear.Text), 1, 1),
-                        TxtGenre.Text, decimal.Parse(TxtPrice.Text));
+                    var movie = new Movie(TxtTitle.Text, new DateTime(Int32.Parse(TxtYear.Text), 1, 1), TxtGenre.Text, decimal.Parse(TxtPrice.Text));
+                    return Choice.NewChoice1Of2<Movie, MovieInputError>(movie);
                 }
                 catch (Exception)
                 {
-                    return Option.None<Movie>();
+                    return Choice.NewChoice2Of2<Movie, MovieInputError>(MovieInputError.ParsingError);
                 }
             }
         }

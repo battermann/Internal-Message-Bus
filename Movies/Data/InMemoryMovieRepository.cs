@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FunctionalExtensions;
+using Movies.Contracts;
 using Movies.Events;
 using Movies.Models;
 
 namespace Movies.Data
 {
-    public class InMemoryMovieRepository : IMovieRepository
+    public class InMemoryMovieRepository : IMovieRepository, IMovieQueryFacade
     {
         private List<MovieDto> _movies;
 
@@ -63,22 +64,5 @@ namespace Movies.Data
                 .Select(x => x.Id == e.Id ? MapFromEvent(e, x) : x)
                 .ToList();
         }
-    }
-
-    public class MovieDto
-    {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public DateTime ReleaseDate { get; set; }
-        public string Genre { get; set; }
-        public decimal Price { get; set; }
-    }
-
-    public interface IMovieRepository
-    {
-        Option<Movie> GetById(Guid id);
-        IEnumerable<Movie> GetAll(); 
-        void Insert(MovieCreated e);
-        void Update(MovieTitleChanged e);
     }
 }

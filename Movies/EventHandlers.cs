@@ -1,4 +1,5 @@
-﻿using Movies.Data;
+﻿using Movies.Contracts;
+using Movies.Data;
 using Movies.Events;
 
 namespace Movies

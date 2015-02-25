@@ -1,7 +1,4 @@
-﻿using Movies.Commands;
-using Movies.Contracts;
-
-namespace Movies.Infrastructure
+﻿namespace Movies.Contracts
 {
     public interface ICommandSender
     {

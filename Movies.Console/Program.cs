@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Movies.Commands;
+using Movies.Contracts;
 using Movies.Data;
 using Movies.Events;
 using Movies.Infrastructure;
@@ -33,7 +34,7 @@ namespace Movies.ConsoleApplication
             bus.Send(new ChangeMovieTitle (id, "Kill Bill Vol. I" ));
         }
 
-        private static void OnTitleChanged(IMovieRepository movieRepository)
+        private static void OnTitleChanged(IMovieQueryFacade movieRepository)
         {
             Console.Clear();
             Console.WriteLine("MOVIE TITLE CHANGED:");
@@ -42,7 +43,7 @@ namespace Movies.ConsoleApplication
             Console.ReadLine();
         }
 
-        private static void OnMovieInserted(IMovieRepository movieRepository)
+        private static void OnMovieInserted(IMovieQueryFacade movieRepository)
         {
             Console.Clear();
             Console.WriteLine("MOVIE INSERTED:");
